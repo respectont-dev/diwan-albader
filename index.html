@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>ديوان البدر | للشاعر محمد البدر الصمادي</title>
+    
+    <!-- 22+ Master Google Arabic Fonts Collection -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;600;700;800;900&family=Almarai:wght@300;400;700;800&family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa+Ink:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;600;700;800;900&family=Changa:wght@400;600;700;800&family=El+Messiri:wght@400;600;700&family=Gulzar&family=Katibeh&family=Kufam:wght@400;600;700;800&family=Lalezar&family=Lateef:wght@400;700&family=Mada:wght@400;600;700;800&family=Marhey:wght@400;600;700&family=Noto+Kufi+Arabic:wght@400;600;700;800&family=Noto+Naskh+Arabic:wght@400;600;700&family=Qahiri&family=Rakkas&family=Readex+Pro:wght@300;400;600;700&family=Reem+Kufi+Fun:wght@400;600;700&family=Reem+Kufi+Ink&family=Reem+Kufi:wght@400;600;700&family=Scheherazade+New:wght@400;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- html2canvas for HD Card Image Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="desert-night-theme font-tajawal">
+
+    <!-- ================= DYNAMIC 3D THEMED SCENE ENGINE CONTAINER ================= -->
+    <div id="dynamicSceneContainer" class="dynamic-scene-wrapper">
+        <!-- Canvas for particle, weather, and starry atmospheric effects -->
+        <canvas id="sceneAtmosphereCanvas" class="scene-atmosphere-canvas"></canvas>
+        
+        <!-- 3D Scenic Environmental Layers Container (Transforms with every theme) -->
+        <div id="scenicStage" class="scenic-stage">
+            <!-- Dynamic Environment Injected via ThemeSceneEngine -->
+        </div>
+
+        <!-- Master Luminous Realistic Moon Entity -->
+        <div id="celestialMoon" class="celestial-moon">
+            <div class="real-moon-glow-aura"></div>
+            <div class="real-moon-img-wrapper" id="moonImgWrapper">
+                <img id="realMoonImage" src="https://images.unsplash.com/photo-1532693322450-2cb5c511067d?auto=format&fit=crop&w=600&q=80" alt="البدر المشع">
+            </div>
+            <div class="real-moon-halo"></div>
+        </div>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- ================= MAIN HEADER NAVIGATION ================= -->
+    <header class="main-header" id="mainHeader">
+        <div class="header-container">
+            
+            <!-- Right: Calligraphy Logo "ديوان البدر" -->
+            <div class="logo-wrapper" onclick="navigateTo('home')">
+                <div class="logo-calligraphy diwani-font">
+                    <span class="logo-diwan" id="headerLogoDiwanText">دِيْوانُ</span>
+                    <span class="logo-badr" id="headerLogoBadrText">البَدْر</span>
+                    <span class="logo-star-glow">✦</span>
+                </div>
+                <span class="logo-subtitle" id="headerPoetSubtitle">للشاعر محمد البدر الصمادي</span>
+            </div>
+
+            <!-- Center: Navigation Links -->
+            <nav class="nav-links" id="navLinks">
+                <button class="nav-btn active" data-target="home" onclick="navigateTo('home')">
+                    <i data-lucide="compass"></i>
+                    <span>الرئيسية</span>
+                </button>
+                <button class="nav-btn" data-target="poems" onclick="navigateTo('poems')">
+                    <i data-lucide="book-open"></i>
+                    <span>قصائد الديوان</span>
+                </button>
+                <button class="nav-btn" data-target="categories" onclick="navigateTo('categories')">
+                    <i data-lucide="layout-grid"></i>
+                    <span>الأغراض والبحور</span>
+                </button>
+                <button class="nav-btn" data-target="about" onclick="navigateTo('about')">
+                    <i data-lucide="feather"></i>
+                    <span>عن الشاعر</span>
+                </button>
+                <button class="nav-btn" data-target="favorites" onclick="navigateTo('favorites')">
+                    <i data-lucide="bookmark"></i>
+                    <span>المفضلة</span>
+                    <span class="fav-counter" id="favCounter">0</span>
+                </button>
+            </nav>
+
+            <!-- Left Controls: Daily Streak and Side Drawer Menu Toggle Button -->
+            <div class="header-actions">
+                
+                <!-- Daily Visits Streak Badge -->
+                <div class="streak-badge-btn" id="streakBadgeBtn" onclick="openStreakModal()" title="ستريك الزيارات اليومية المتتالية">
+                    <span class="streak-flame">🔥</span>
+                    <span class="streak-count" id="streakCount">1</span>
+                    <span class="streak-label">أيام</span>
+                </div>
+
+                <!-- Three Bars Menu Button (القائمة والخصائص والإدارة) -->
+                <button class="side-menu-btn" id="sideMenuToggleBtn" onclick="toggleMobileMenu()" title="القائمة والخصائص والإدارة">
+                    <i data-lucide="menu"></i>
+                    <span>القائمة والخصائص</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Master Side Drawer (الثلاث شرط - القائمة والخصائص والإدارة) -->
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="drawer-header">
+            <div class="logo-calligraphy diwani-font sm">
+                <span class="logo-diwan">دِيْوانُ</span>
+                <span class="logo-badr">البَدْر</span>
+            </div>
+            <button class="icon-btn" onclick="toggleMobileMenu()" title="إغلاق القائمة">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div class="drawer-body">
+            
+            <!-- Navigation Links Section -->
+            <div class="drawer-section-title">التنقل في الديوان</div>
+            <div class="drawer-nav">
+                <button class="drawer-link active" onclick="navigateTo('home'); toggleMobileMenu();">
+                    <i data-lucide="compass"></i> الرئيسية
+                </button>
+                <button class="drawer-link" onclick="navigateTo('poems'); toggleMobileMenu();">
+                    <i data-lucide="book-open"></i> قصائد الديوان
+                </button>
+                <button class="drawer-link" onclick="navigateTo('categories'); toggleMobileMenu();">
+                    <i data-lucide="layout-grid"></i> الأغراض والبحور
+                </button>
+                <button class="drawer-link" onclick="navigateTo('about'); toggleMobileMenu();">
+                    <i data-lucide="feather"></i> عن الشاعر
+                </button>
+                <button class="drawer-link" onclick="navigateTo('favorites'); toggleMobileMenu();">
+                    <i data-lucide="bookmark"></i> المحفوظات والمفضلة
+                </button>
+            </div>
+
+            <div class="drawer-divider"></div>
+
+            <!-- Features & Management Section (أدوات وتخصيص الموقع والإدارة) -->
+            <div class="drawer-section-title">خصائص الديوان والإدارة</div>
+            <div class="drawer-features-list">
+                
+                <!-- 1. Admin Entrance -->
+                <button class="drawer-link highlight-admin" onclick="openAdminModal(); toggleMobileMenu();">
+                    <div class="feature-icon-circle"><i data-lucide="shield-check"></i></div>
+                    <div class="feature-text-block">
+                        <strong>لوحة تحكم المسؤول (smady)</strong>
+                        <small>إضافة وتعديل القصائد، الإحصائيات، والإعدادات</small>
+                    </div>
+                </button>
+
+                <!-- 2. Arabic Font Customizer Dropdown -->
+                <div class="drawer-font-box">
+                    <div class="drawer-font-header">
+                        <div class="feature-icon-circle"><i data-lucide="type"></i></div>
+                        <div class="feature-text-block">
+                            <strong>تخصيص نوع الخط العربي</strong>
+                            <small id="currentFontNameLabel">اختر من 22+ خط عربي أصيل</small>
+                        </div>
+                    </div>
+                    <select id="drawerFontSelect" class="drawer-font-select" onchange="changeGlobalFont(this.value, this.options[this.selectedIndex].text)">
+                    </select>
+                </div>
+
+                <!-- 3. Themes Gallery -->
+                <button class="drawer-link highlight-theme" onclick="openAdminModalWithTab('themes30'); toggleMobileMenu();">
+                    <div class="feature-icon-circle"><i data-lucide="palette"></i></div>
+                    <div class="feature-text-block">
+                        <strong>معرض الـ 30 ثيم ومشهد 3D</strong>
+                        <small>تغيير ألوان ومناظر الموقع فوراً</small>
+                    </div>
+                </button>
+
+                <!-- 4. Verse Card Studio -->
+                <button class="drawer-link highlight-studio" onclick="openCardStudio(); toggleMobileMenu();">
+                    <div class="feature-icon-circle"><i data-lucide="sparkles"></i></div>
+                    <div class="feature-text-block">
+                        <strong>استوديو تصميم بطاقات الأبيات</strong>
+                        <small>إنشاء وتحميل صور بجودة HD PNG</small>
+                    </div>
+                </button>
+
+                <!-- 5. User Account & Diwan Request -->
+                <button class="drawer-link highlight-user" onclick="openUserModal(); toggleMobileMenu();">
+                    <div class="feature-icon-circle"><i data-lucide="user-plus"></i></div>
+                    <div class="feature-text-block">
+                        <strong id="drawerUserLabel">حسابي / طلب تفعيل ديوان</strong>
+                        <small>تسجيل الدخول وإرسال طلبات التفعيل</small>
+                    </div>
+                </button>
+
+            </div>
+        </div>
+    </div>
+    <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleMobileMenu()"></div>
+
+    <!-- MAIN VIEWS WRAPPER -->
+    <main id="appContainer">
+
+        <!-- ================= VIEW 1: HOME PAGE ================= -->
+        <section id="homeView" class="view-section active">
+            
+            <!-- Hero Section -->
+            <div class="hero-section">
+                
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="badge-dot"></span>
+                        <span id="heroBadgeText">للشاعر محمد البدر الصمادي</span>
+                    </div>
+
+                    <h1 class="hero-title diwani-font" id="heroTitleText">
+                        إحياء الشعر العربي
+                    </h1>
+
+                    <p class="hero-subtitle" id="heroSubtitleText">
+                        هذا الموقع يعرض لكم قصائد الشاعر محمد البدر الصمادي , مبادرة لحفظ اشعاره
+                    </p>
+
+                    <div class="hero-search-wrapper">
+                        <div class="search-input-box">
+                            <i data-lucide="search" class="search-icon"></i>
+                            <input 
+                                type="text" 
+                                id="globalSearchInput" 
+                                placeholder="ابحث عن قصيدة، بيت شعر، موضوع، بحر شعري..." 
+                                autocomplete="off"
+                                oninput="handleSearchInput(this.value)"
+                                onfocus="handleSearchFocus()"
+                            >
+                            <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display:none;">
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                        <div class="search-dropdown" id="searchDropdown"></div>
+                    </div>
+
+                    <div class="hero-tags-row" id="heroTagsRow">
+                        <button class="hero-tag active" onclick="filterByTag('all')">كل القصائد</button>
+                        <button class="hero-tag" onclick="filterByTag('غزل')">الغزل</button>
+                        <button class="hero-tag" onclick="filterByTag('حكمة')">الحكمة</button>
+                        <button class="hero-tag" onclick="filterByTag('فخر')">الفخر والفروسية</button>
+                        <button class="hero-tag" onclick="filterByTag('وجدانيات')">الوجدانيات</button>
+                        <button class="hero-tag" onclick="filterByTag('وطنيات')">الوطنيات</button>
+                        <button class="hero-tag" onclick="filterByTag('رثاء')">الرثاء</button>
+                    </div>
+
+                    <div class="hero-actions-row">
+                        <button class="btn-primary-gradient" onclick="openRandomPoem()">
+                            <i data-lucide="sparkles"></i>
+                            <span>قصيدة عشوائية</span>
+                        </button>
+                        <button class="btn-glass" onclick="navigateTo('poems')">
+                            <i data-lucide="book-open"></i>
+                            <span>تصفح كامل الديوان</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Ribbon -->
+            <div class="stats-ribbon">
+                <div class="stat-item">
+                    <span class="stat-number" id="statPoemsCount">0</span>
+                    <span class="stat-label">قصيدة في الديوان</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" id="statVersesCount">0</span>
+                    <span class="stat-label">بيت شعر موثّق</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" id="statCategoriesCount">0</span>
+                    <span class="stat-label">أغراض وبحور شعرية</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" id="statStreakDisplay">🔥 1</span>
+                    <span class="stat-label">ستريك الزيارات اليومية</span>
+                </div>
+            </div>
+
+            <!-- Current Active Theme Environment Info Card -->
+            <section class="section-container" style="margin-bottom: 2rem;">
+                <div class="active-theme-showcase-bar">
+                    <div class="showcase-left">
+                        <span class="showcase-indicator-dot"></span>
+                        <div>
+                            <small class="text-muted">المشهد البصري والثيم الحالي:</small>
+                            <h4 id="currentThemeNameLabel" class="diwani-font">ليل الصحراء والواحة</h4>
+                        </div>
+                    </div>
+                    <div class="showcase-right">
+                        <span class="showcase-desc" id="currentThemeDescLabel">صحراء واسعة ثلاثية الأبعاد مع واحة نخيل متمايل وإبل تشرب من الماء</span>
+                        <button class="btn-sm-glass" onclick="openAdminModalWithTab('themes30')">
+                            <i data-lucide="sliders"></i> استعراض الـ 30 ثيم ومشهد
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Poem Card Section -->
+            <section class="section-container" id="featuredSectionContainer">
+                <div class="section-header">
+                    <div class="section-title-wrap">
+                        <i data-lucide="flame" class="section-icon gold"></i>
+                        <h2 class="section-title">قصيدة مختارة من الديوان</h2>
+                    </div>
+                    <button class="view-all-link" onclick="navigateTo('poems')">
+                        عرض كافة القصائد <i data-lucide="arrow-left"></i>
+                    </button>
+                </div>
+                <div class="featured-poem-card" id="featuredPoemContainer"></div>
+            </section>
+
+            <!-- Recent Poems Grid -->
+            <section class="section-container">
+                <div class="section-header">
+                    <div class="section-title-wrap">
+                        <i data-lucide="feather" class="section-icon"></i>
+                        <h2 class="section-title">قصائد ديوان البدر</h2>
+                    </div>
+                    <div class="filter-pills" id="homeCategoryFilterPills"></div>
+                </div>
+                <div class="poems-grid" id="homePoemsGrid"></div>
+            </section>
+
+            <!-- Quote Banner -->
+            <section class="quote-banner-section">
+                <div class="quote-banner-inner">
+                    <i data-lucide="quote" class="quote-watermark"></i>
+                    <p class="quote-verse" id="bannerVerseText">
+                        "إذا أقبلَ البدرُ المُنيرُ بدَجنةٍ .. تَبَدَّدَ في الآفاقِ ليلُ المواجعِ"
+                    </p>
+                    <span class="quote-author" id="bannerPoetAuthor">— الشاعر محمد البدر الصمادي</span>
+                    <div class="quote-actions">
+                        <button class="btn-sm-glass" onclick="copyBannerQuote()">
+                            <i data-lucide="copy"></i> نسخ البيت
+                        </button>
+                        <button class="btn-sm-glass" onclick="openCardStudioWithQuote()">
+                            <i data-lucide="image"></i> تصميم بطاقة صورة
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </section>
+
+        <!-- ================= VIEW 2: POEMS LISTING VIEW ================= -->
+        <section id="poemsView" class="view-section">
+            <div class="page-banner">
+                <h1 class="page-title diwani-font">قصائد ديوان البدر</h1>
+                <p class="page-subtitle">استعرض روائع القصائد والأبيات المنظومة في مختلف بحور وأغراض الشعر العربي</p>
+                
+                <div class="poems-toolbar">
+                    <div class="toolbar-search">
+                        <i data-lucide="search"></i>
+                        <input type="text" id="poemsListSearch" placeholder="ابحث بالعنوان أو الكلمات أو المناسبة..." oninput="renderPoemsView()">
+                    </div>
+                    <div class="toolbar-selects">
+                        <select id="filterCategorySelect" onchange="renderPoemsView()">
+                            <option value="all">جميع الأغراض</option>
+                        </select>
+                        <select id="filterMeterSelect" onchange="renderPoemsView()">
+                            <option value="all">جميع البحور الشعرية</option>
+                        </select>
+                        <select id="sortPoemsSelect" onchange="renderPoemsView()">
+                            <option value="newest">الأحدث إضافة</option>
+                            <option value="views">الأكثر قراءة وزيارة</option>
+                            <option value="verses">الأكثر أبياتاً</option>
+                            <option value="title">أبجدياً (أ-ي)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-container">
+                <div class="poems-grid" id="allPoemsGrid"></div>
+                <div class="empty-state" id="emptyPoemsState" style="display: none;">
+                    <i data-lucide="book-open"></i>
+                    <h3>الديوان بانتظار إضافة أولى القصائد</h3>
+                    <p>الموقع نظيف وجاهز، يمكن للمسؤول (الأدمن: smady) الدخول وإضافة القصائد والأبيات والصور وتخصيص كل شيء.</p>
+                    <button class="btn-primary-gradient" onclick="openAdminModal()">
+                        <i data-lucide="shield-check"></i> دخول الأدمن لإضافة قصائد
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 3: CATEGORIES VIEW ================= -->
+        <section id="categoriesView" class="view-section">
+            <div class="page-banner">
+                <h1 class="page-title diwani-font">الأغراض الشعرية والبحور</h1>
+                <p class="page-subtitle">تصفح قصائد الشاعر مصنفة حسب الأغراض الأدبية والموازين العروضية</p>
+            </div>
+            <div class="section-container">
+                <div class="categories-grid" id="categoriesGrid"></div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 4: ABOUT THE POET VIEW ================= -->
+        <section id="aboutView" class="view-section">
+            <div class="about-hero">
+                <div class="about-card-glass">
+                    <div class="poet-avatar-frame">
+                        <div class="poet-avatar-glow"></div>
+                        <div class="poet-avatar-img" id="aboutPoetImage">
+                            <i data-lucide="feather" class="avatar-fallback-icon"></i>
+                        </div>
+                    </div>
+                    <div class="poet-info">
+                        <span class="poet-badge">شاعر وأديب</span>
+                        <h1 class="poet-name diwani-font" id="aboutPoetName">محمد البدر الصمادي</h1>
+                        <p class="poet-title-sub">صاحب الحرف الرفيع والقافية الساحرة</p>
+                        <div class="poet-bio-body" id="aboutPoetBio"></div>
+                        <div class="poet-highlights">
+                            <div class="highlight-box">
+                                <i data-lucide="sparkles"></i>
+                                <span>أصالة الوزن والقافية</span>
+                            </div>
+                            <div class="highlight-box">
+                                <i data-lucide="book"></i>
+                                <span>بلاغة المعنى وحسن السبك</span>
+                            </div>
+                            <div class="highlight-box">
+                                <i data-lucide="compass"></i>
+                                <span>حفظ التراث بروح عصرية</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 5: FAVORITES VIEW ================= -->
+        <section id="favoritesView" class="view-section">
+            <div class="page-banner">
+                <h1 class="page-title diwani-font">قصائدي المفضلة</h1>
+                <p class="page-subtitle">الأبيات والقصائد التي قمت بحفظها لترجع إليها في أي وقت</p>
+            </div>
+            <div class="section-container">
+                <div class="poems-grid" id="favoritesGrid"></div>
+                <div class="empty-state" id="emptyFavoritesState" style="display: none;">
+                    <i data-lucide="bookmark-minus"></i>
+                    <h3>لا توجد قصائد في المفضلة حالياً</h3>
+                    <p>اضغط على علامة الحفظ في أي قصيدة لتظهر هنا في قائمتك المفضلة</p>
+                    <button class="btn-primary-gradient" onclick="navigateTo('poems')">استكشف القصائد</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 6: SINGLE POEM DETAIL VIEW (ON A UNIFIED CLASSICAL SLATE) ================= -->
+        <section id="singlePoemView" class="view-section poem-reading-view">
+            
+            <div class="poem-cinematic-header" id="poemCinematicHeader">
+                <button class="back-nav-btn" onclick="navigateTo('poems')">
+                    <i data-lucide="arrow-right"></i>
+                    <span>العودة للديوان</span>
+                </button>
+
+                <div class="poem-title-motion-wrapper" id="poemTitleWrapper">
+                    <span class="poem-category-badge" id="poemReaderCategory">غزل</span>
+                    <h1 class="poem-main-title diwani-font" id="poemReaderTitle">عنوان القصيدة</h1>
+                    <p class="poem-poet-attribution">نظم الشاعر: <strong id="poemReaderPoet">محمد البدر الصمادي</strong></p>
+                </div>
+
+                <div class="poem-meta-chips">
+                    <div class="meta-chip">
+                        <i data-lucide="music-2"></i>
+                        <span>البحر: <strong id="poemReaderMeter">البحر الكامل</strong></span>
+                    </div>
+                    <div class="meta-chip">
+                        <i data-lucide="hash"></i>
+                        <span>عدد الأبيات: <strong id="poemReaderVersesCount">0</strong></span>
+                    </div>
+                    <div class="meta-chip">
+                        <i data-lucide="calendar"></i>
+                        <span>تاريخ النظم: <strong id="poemReaderDate">—</strong></span>
+                    </div>
+                    <div class="meta-chip">
+                        <i data-lucide="eye"></i>
+                        <span>مرات القراءة: <strong id="poemReaderViews">0</strong></span>
+                    </div>
+                </div>
+
+                <!-- Customizer Bar for Poem Reader -->
+                <div class="poem-reader-controls">
+                    <button class="control-btn" id="readerFavBtn" onclick="toggleCurrentPoemFavorite()">
+                        <i data-lucide="bookmark"></i>
+                        <span>حفظ في المفضلة</span>
+                    </button>
+                    <button class="control-btn" onclick="toggleExplanationMode()">
+                        <i data-lucide="help-circle"></i>
+                        <span id="explanationToggleLabel">إظهار الشروح والمعاني</span>
+                    </button>
+                    
+                    <div class="reader-font-selector">
+                        <select id="readerFontSelect" onchange="changeReaderFont(this.value)"></select>
+                    </div>
+
+                    <button class="control-btn" onclick="adjustFontSize(1)" title="تكبير الخط">
+                        <i data-lucide="zoom-in"></i>
+                    </button>
+                    <button class="control-btn" onclick="adjustFontSize(-1)" title="تصغير الخط">
+                        <i data-lucide="zoom-out"></i>
+                    </button>
+                    <button class="control-btn" onclick="shareCurrentPoem()">
+                        <i data-lucide="share-2"></i>
+                        <span>مشاركة</span>
+                    </button>
+                    <button class="control-btn" onclick="openCardStudioForPoem()">
+                        <i data-lucide="image"></i>
+                        <span>تصميم بطاقة</span>
+                    </button>
+                </div>
+
+                <div class="poem-story-box" id="poemStoryBox" style="display: none;">
+                    <div class="story-header">
+                        <i data-lucide="info"></i>
+                        <span>مناسبة وقصة القصيدة:</span>
+                    </div>
+                    <p class="story-text" id="poemStoryText"></p>
+                </div>
+            </div>
+
+            <!-- UNIFIED CLASSICAL POETRY SLATE -->
+            <div class="poem-slate-stage">
+                <div class="classical-poetry-slate" id="classicalPoetrySlate">
+                    <div class="slate-top-ornament">❊ ❊ ❊</div>
+                    <div class="slate-verses-container" id="slateVersesContainer"></div>
+                    <div class="slate-bottom-ornament">
+                        <span>✦ تمت القصيدة بحمد الله ✦</span>
+                        <small id="slatePoetSign">— الشاعر محمد البدر الصمادي</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="poem-footer-navigation">
+                <button class="nav-adjacent-btn prev" id="prevPoemBtn" onclick="navigateAdjacentPoem(-1)">
+                    <i data-lucide="chevron-right"></i>
+                    <div>
+                        <small>القصيدة السابقة</small>
+                        <span id="prevPoemTitle">...</span>
+                    </div>
+                </button>
+                <button class="btn-primary-gradient" onclick="openCardStudioForPoem()">
+                    <i data-lucide="palette"></i>
+                    <span>تصميم بطاقة شعرية لأبيات هذه القصيدة</span>
+                </button>
+                <button class="nav-adjacent-btn next" id="nextPoemBtn" onclick="navigateAdjacentPoem(1)">
+                    <div>
+                        <small>القصيدة التالية</small>
+                        <span id="nextPoemTitle">...</span>
+                    </div>
+                    <i data-lucide="chevron-left"></i>
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-col brand">
+                <div class="logo-calligraphy diwani-font">
+                    <span class="logo-diwan">دِيْوانُ</span>
+                    <span class="logo-badr">البَدْر</span>
+                </div>
+                <p class="footer-desc">
+                    الموقع والديوان الرقمي المخصص لقصائد وأشعار الشاعر محمد البدر الصمادي. نافذة أدبية فاخرة لحفظ الشعر العربي وإحيائه برؤية جمالية عصرية متكاملة.
+                </p>
+                <div class="footer-admin-link">
+                    <button class="footer-admin-btn" onclick="openAdminModal()">
+                        <i data-lucide="shield-check"></i> لوحة إدارة الموقع والإحصائيات والثيمات
+                    </button>
+                </div>
+            </div>
+
+            <div class="footer-col links">
+                <h4>روابط سريعة</h4>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="navigateTo('home')">الصفحة الرئيسية</a></li>
+                    <li><a href="javascript:void(0)" onclick="navigateTo('poems')">جميع القصائد</a></li>
+                    <li><a href="javascript:void(0)" onclick="navigateTo('categories')">الأغراض الشعرية</a></li>
+                    <li><a href="javascript:void(0)" onclick="navigateTo('about')">سيرة الشاعر</a></li>
+                    <li><a href="javascript:void(0)" onclick="openUserModal()">طلب تفعيل ديوان</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col quote">
+                <h4>حكمة الديوان</h4>
+                <blockquote class="footer-quote" id="footerQuoteBlock">
+                    "إذا أقبلَ البدرُ المُنيرُ بدَجنةٍ .. تَبَدَّدَ في الآفاقِ ليلُ المواجعِ"
+                </blockquote>
+                <div class="credentials-hint">
+                    <small>تسجيل دخول الأدمن متاح باسم <code>smady</code></small>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>جميع الحقوق محفوظة &copy; <span id="currentYear">2026</span> ديوان البدر | للشاعر محمد البدر الصمادي</p>
+        </div>
+    </footer>
+
+    <!-- ================= MODAL 1: DAILY STREAK MODAL ================= -->
+    <div class="modal-backdrop" id="streakModalBackdrop">
+        <div class="modal-dialog small-modal">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <span class="streak-flame-lg">🔥</span>
+                    <h3>ستريك الزيارات اليومية</h3>
+                </div>
+                <button class="modal-close-btn" onclick="closeStreakModal()"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="streak-highlight-card">
+                    <span class="streak-huge-number" id="modalStreakCount">1</span>
+                    <span class="streak-huge-text">أيام متتالية من زيارة ديوان البدر!</span>
+                </div>
+                <p class="text-muted" style="margin-top: 1rem; font-size: 0.95rem;">
+                    استمر في زيارة الموقع يومياً للحفاظ على ستريك قراءة وتذوق الشعر العربي وتفعيل مزاياك الخاصة.
+                </p>
+                <div class="streak-history-stats">
+                    <div class="mini-stat">
+                        <span>إجمالي الزيارات:</span>
+                        <strong id="totalVisitsCount">1</strong>
+                    </div>
+                    <div class="mini-stat">
+                        <span>آخر زيارة:</span>
+                        <strong id="lastVisitDate">اليوم</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 2: USER ACCOUNT & REQUEST DIWAN ACTIVATION ================= -->
+    <div class="modal-backdrop" id="userModalBackdrop">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <i data-lucide="user-check" class="gold"></i>
+                    <h3 id="userModalTitle">حساب المستخدم وطلب تفعيل ديوان</h3>
+                </div>
+                <button class="modal-close-btn" onclick="closeUserModal()"><i data-lucide="x"></i></button>
+            </div>
+
+            <!-- Auth Form -->
+            <div class="modal-body" id="userAuthSection">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" id="authLoginTab" onclick="switchAuthTab('login')">تسجيل دخول</button>
+                    <button class="auth-tab" id="authRegisterTab" onclick="switchAuthTab('register')">إنشاء حساب جديد</button>
+                </div>
+
+                <form id="userLoginForm" onsubmit="handleUserLogin(event)">
+                    <div class="form-group">
+                        <label><i data-lucide="mail"></i> البريد الإلكتروني أو اسم المستخدم:</label>
+                        <input type="text" id="userLoginEmail" required placeholder="example@domain.com">
+                    </div>
+                    <div class="form-group">
+                        <label><i data-lucide="key"></i> كلمة المرور:</label>
+                        <input type="password" id="userLoginPassword" required placeholder="••••••••">
+                    </div>
+                    <div class="login-feedback" id="userLoginFeedback"></div>
+                    <button type="submit" class="btn-primary-gradient full-width">دخول</button>
+                </form>
+
+                <form id="userRegisterForm" onsubmit="handleUserRegister(event)" style="display: none;">
+                    <div class="form-group">
+                        <label><i data-lucide="user"></i> الاسم الكامل / اللقب الشعري:</label>
+                        <input type="text" id="userRegName" required placeholder="مثال: الشاعر أحمد">
+                    </div>
+                    <div class="form-group">
+                        <label><i data-lucide="mail"></i> البريد الإلكتروني:</label>
+                        <input type="email" id="userRegEmail" required placeholder="name@domain.com">
+                    </div>
+                    <div class="form-group">
+                        <label><i data-lucide="key"></i> كلمة المرور:</label>
+                        <input type="password" id="userRegPassword" required placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label><i data-lucide="feather"></i> نبذة تعريفية قصيرة (اختياري):</label>
+                        <textarea id="userRegBio" rows="2" placeholder="محبي الشعر العربي..."></textarea>
+                    </div>
+                    <div class="login-feedback" id="userRegFeedback"></div>
+                    <button type="submit" class="btn-primary-gradient full-width">إنشاء الحساب فوراً</button>
+                </form>
+            </div>
+
+            <!-- User Dashboard -->
+            <div class="modal-body" id="userDashboardSection" style="display: none;">
+                <div class="user-profile-header">
+                    <div class="user-avatar-circle">
+                        <i data-lucide="user"></i>
+                    </div>
+                    <div>
+                        <h4 id="userNameGreeting">مرحباً بك</h4>
+                        <span class="user-email-tag" id="userEmailTag"></span>
+                    </div>
+                    <button class="btn-sm-glass" onclick="handleUserLogout()">
+                        <i data-lucide="log-out"></i> خروج
+                    </button>
+                </div>
+
+                <hr class="modal-hr">
+
+                <div class="diwan-request-box">
+                    <div class="request-box-header">
+                        <div>
+                            <h5>طلب تفعيل ديوان شعري خاص</h5>
+                            <p>أرسل طلبك ليتم مراجعته والموافقة عليه من قِبل المسؤول (الأدمن: smady)</p>
+                        </div>
+                        <span class="status-badge" id="myRequestStatusBadge">لم يتم إرسال طلب</span>
+                    </div>
+
+                    <form id="diwanRequestForm" onsubmit="handleSendDiwanRequest(event)">
+                        <div class="form-group">
+                            <label>اسم الديوان المقترح *</label>
+                            <input type="text" id="reqDiwanName" required placeholder="مثال: ديوان نسائم الليل">
+                        </div>
+                        <div class="form-group">
+                            <label>اسم الشاعر أو صاحب الديوان *</label>
+                            <input type="text" id="reqPoetName" required placeholder="الاسم الكامل">
+                        </div>
+                        <div class="form-group">
+                            <label>نموذج من الأبيات أو سبب التفعيل *</label>
+                            <textarea id="reqDescription" rows="3" required placeholder="اكتب نبذة أو أبيات شعرية من ديوانك..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary-gradient" id="submitRequestBtn">
+                            <i data-lucide="send"></i> إرسال طلب التفعيل للأدمن
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= MODAL 3: ADMIN DASHBOARD (smady / raneem11) ================= -->
+    <div class="modal-backdrop" id="adminModalBackdrop">
+        <div class="modal-dialog admin-modal">
+            
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <i data-lucide="shield-check" class="gold"></i>
+                    <h3 id="adminModalTitle">بوابة إدارة ديوان البدر (المسؤول)</h3>
+                </div>
+                <button class="modal-close-btn" onclick="closeAdminModal()"><i data-lucide="x"></i></button>
+            </div>
+
+            <!-- Login Section -->
+            <div class="modal-body" id="adminLoginSection">
+                <div class="admin-login-box">
+                    <div class="admin-lock-icon">
+                        <i data-lucide="lock"></i>
+                    </div>
+                    <h4>تسجيل دخول المسؤول (الآدمن)</h4>
+                    <p class="text-muted">أدخل بيانات الاعتماد المخصصة للتحكم بالقصائد والألوان والإحصائيات</p>
+                    
+                    <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+                        <div class="form-group">
+                            <label><i data-lucide="user"></i> اسم المستخدم:</label>
+                            <input type="text" id="adminUsername" placeholder="smady" required autofocus autocomplete="username">
+                        </div>
+                        <div class="form-group">
+                            <label><i data-lucide="key"></i> كلمة المرور:</label>
+                            <input type="password" id="adminPassword" placeholder="••••••••" required autocomplete="current-password">
+                        </div>
+                        <div class="login-feedback" id="loginErrorFeedback"></div>
+                        <button type="submit" class="btn-primary-gradient full-width">
+                            <i data-lucide="log-in"></i> دخول للوحة التحكم
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Admin Full Controls Dashboard -->
+            <div class="modal-body" id="adminDashboardSection" style="display: none;">
+                
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-tab="analytics" onclick="switchAdminTab('analytics')">
+                        <i data-lucide="bar-chart-2"></i> إحصائيات الموقع والزوار
+                    </button>
+                    <button class="admin-tab" data-tab="themes30" onclick="switchAdminTab('themes30')">
+                        <i data-lucide="palette"></i> 30 ثيم ومشهد 3D
+                    </button>
+                    <button class="admin-tab" data-tab="requests" onclick="switchAdminTab('requests')">
+                        <i data-lucide="inbox"></i> طلبات التفعيل <span class="requests-badge" id="adminPendingRequestsBadge">0</span>
+                    </button>
+                    <button class="admin-tab" data-tab="poems" onclick="switchAdminTab('poems')">
+                        <i data-lucide="book-plus"></i> إدارة القصائد والأبيات
+                    </button>
+                    <button class="admin-tab" data-tab="theme-custom" onclick="switchAdminTab('theme-custom')">
+                        <i data-lucide="sliders"></i> تخصيص الألوان يدوياً
+                    </button>
+                    <button class="admin-tab" data-tab="images" onclick="switchAdminTab('images')">
+                        <i data-lucide="image"></i> صور البدر والخلفيات
+                    </button>
+                    <button class="admin-tab" data-tab="site-info" onclick="switchAdminTab('site-info')">
+                        <i data-lucide="settings"></i> نصوص وهوية الموقع
+                    </button>
+                    <button class="admin-tab" data-tab="backup" onclick="switchAdminTab('backup')">
+                        <i data-lucide="database"></i> النسخ الاحتياطي
+                    </button>
+                    <button class="admin-tab logout-tab" onclick="adminLogout()">
+                        <i data-lucide="log-out"></i> خروج
+                    </button>
+                </div>
+
+                <!-- TAB 1: SITE ANALYTICS & VISITOR STATS -->
+                <div class="admin-tab-content active" id="tabContent-analytics">
+                    <div class="admin-section-info">
+                        <h4>لوحة الإحصائيات الشاملة ونشاط الزوار</h4>
+                        <p>تتبع عدد الزيارات، حالات تسجيل الدخول، القصائد الأكثر قراءة، والأبيات الأكثر نسخاً ومشاركة في الوقت الفعلي.</p>
+                    </div>
+
+                    <div class="analytics-metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon gold"><i data-lucide="users"></i></div>
+                            <div class="metric-val" id="metricTotalVisits">0</div>
+                            <div class="metric-title">إجمالي الزيارات والقراءات</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon cyan"><i data-lucide="user-check"></i></div>
+                            <div class="metric-val" id="metricRegisteredUsers">0</div>
+                            <div class="metric-title">المستخدمين المسجلين</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon flame"><i data-lucide="flame"></i></div>
+                            <div class="metric-val" id="metricCurrentStreak">1</div>
+                            <div class="metric-title">ستريك الزيارات اليومية</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon emerald"><i data-lucide="copy"></i></div>
+                            <div class="metric-val" id="metricCopiedVerses">0</div>
+                            <div class="metric-title">مرات نسخ الأبيات والمشاركة</div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-details-grid">
+                        <div class="analytics-box">
+                            <div class="analytics-box-header">
+                                <i data-lucide="trending-up" class="gold"></i>
+                                <h5>القصائد الأكثر قراءة وزيارة من الزوار</h5>
+                            </div>
+                            <div class="top-ranking-list" id="topReadPoemsList"></div>
+                        </div>
+
+                        <div class="analytics-box">
+                            <div class="analytics-box-header">
+                                <i data-lucide="activity" class="cyan"></i>
+                                <h5>سجل الحسابات والنشاط الأخير</h5>
+                            </div>
+                            <div class="recent-activities-list" id="recentActivitiesList"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: 30 THEMES & 3D SCENIC ENVIRONMENTS -->
+                <div class="admin-tab-content" id="tabContent-themes30">
+                    <div class="admin-section-info">
+                        <h4>مكتبة الـ 30 ثيم ومشهد بيئي ثلاثي الأبعاد</h4>
+                        <p>كل ثيم يغير ليس فقط الألوان، بل يحول الخلفية لمشهد حي متحرك (واحة النخيل المتمايل والإبل، قصر الحمراء وقاعة الأسود وتدفق المياه، شفق الغروب، النجوم المتلألئة، وغيرها).</p>
+                    </div>
+
+                    <div class="themes-30-grid" id="themes30Container"></div>
+                </div>
+
+                <!-- TAB 3: Diwan Activation Requests -->
+                <div class="admin-tab-content" id="tabContent-requests">
+                    <div class="admin-section-info">
+                        <h4>طلبات تفعيل الدواوين من المستخدمين</h4>
+                        <p>لك كامل الحرية في مراجعة الطلبات وقبولها أو رفضها مع كتابة الملاحظات إن أردت.</p>
+                    </div>
+                    <div class="requests-list-container" id="adminRequestsList"></div>
+                </div>
+
+                <!-- TAB 4: Poems CRUD -->
+                <div class="admin-tab-content" id="tabContent-poems">
+                    <div class="tab-header-flex">
+                        <div>
+                            <h4>مكتبة القصائد والأبيات</h4>
+                            <p>أضف قصيدة جديدة، عدل الأبيات والشروح، أو احذف ما تشاء</p>
+                        </div>
+                        <button class="btn-primary-gradient" onclick="openPoemEditorModal()">
+                            <i data-lucide="plus-circle"></i> إضافة قصيدة جديدة
+                        </button>
+                    </div>
+                    <div class="admin-poems-table-wrap">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>العنوان</th>
+                                    <th>الغرض</th>
+                                    <th>البحر</th>
+                                    <th>عدد الأبيات</th>
+                                    <th>مرات القراءة</th>
+                                    <th>مميزة؟</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminPoemsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 5: Manual Theme Customizer -->
+                <div class="admin-tab-content" id="tabContent-theme-custom">
+                    <div class="admin-section-info">
+                        <h4>تخصيص ألوان وثيم الموقع يدوياً بالكامل</h4>
+                        <p>تحكم فوري بكافة ألوان ليل الصحراء والتوهج والنصوص والكروت مع معاينة لحظية.</p>
+                    </div>
+
+                    <div class="color-pickers-grid">
+                        <div class="color-field">
+                            <label>اللون الرئيسي للخلفية (سواد الليل العميق)</label>
+                            <div class="picker-row">
+                                <input type="color" id="colBgPrimary" onchange="previewThemeColors()">
+                                <input type="text" id="colBgPrimaryHex" oninput="syncColorHex('colBgPrimary', this.value)">
+                            </div>
+                        </div>
+
+                        <div class="color-field">
+                            <label>لون الكروت والصفيحة الثانوية</label>
+                            <div class="picker-row">
+                                <input type="color" id="colBgSecondary" onchange="previewThemeColors()">
+                                <input type="text" id="colBgSecondaryHex" oninput="syncColorHex('colBgSecondary', this.value)">
+                            </div>
+                        </div>
+
+                        <div class="color-field">
+                            <label>اللون الذهبي للبدر والتوهج</label>
+                            <div class="picker-row">
+                                <input type="color" id="colAccentGold" onchange="previewThemeColors()">
+                                <input type="text" id="colAccentGoldHex" oninput="syncColorHex('colAccentGold', this.value)">
+                            </div>
+                        </div>
+
+                        <div class="color-field">
+                            <label>لون ضوء الواحة الليلي (Cyan)</label>
+                            <div class="picker-row">
+                                <input type="color" id="colAccentCyan" onchange="previewThemeColors()">
+                                <input type="text" id="colAccentCyanHex" oninput="syncColorHex('colAccentCyan', this.value)">
+                            </div>
+                        </div>
+
+                        <div class="color-field">
+                            <label>لون النصوص الرئيسية</label>
+                            <div class="picker-row">
+                                <input type="color" id="colTextPrimary" onchange="previewThemeColors()">
+                                <input type="text" id="colTextPrimaryHex" oninput="syncColorHex('colTextPrimary', this.value)">
+                            </div>
+                        </div>
+
+                        <div class="color-field">
+                            <label>لون نصوص الأبيات على الصفيحة</label>
+                            <div class="picker-row">
+                                <input type="color" id="colTextVerse" onchange="previewThemeColors()">
+                                <input type="text" id="colTextVerseHex" oninput="syncColorHex('colTextVerse', this.value)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-actions-bar">
+                        <button class="btn-primary-gradient" onclick="saveThemeSettings()">
+                            <i data-lucide="save"></i> حفظ وتطبيق الألوان الآن
+                        </button>
+                        <button class="btn-glass" onclick="resetDefaultTheme()">
+                            <i data-lucide="rotate-ccw"></i> استعادة الألوان الافتراضية
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB 6: Images Manager -->
+                <div class="admin-tab-content" id="tabContent-images">
+                    <div class="admin-section-info">
+                        <h4>التحكم في صور القمر الحقيقي وخلفيات الصحراء</h4>
+                        <p>يمكنك تغيير صورة القمر الفعلي وصور الخلفيات الليلية لتظهر بأعلى درجات الواقعية والإشعاع.</p>
+                    </div>
+
+                    <form id="imagesManagerForm" onsubmit="saveCustomImages(event)">
+                        <div class="form-group">
+                            <label>رابط صورة البدر الحقيقي (HD Moon Photo URL):</label>
+                            <input type="url" id="adminMoonImageUrl" placeholder="https://..." value="https://images.unsplash.com/photo-1532693322450-2cb5c511067d?auto=format&fit=crop&w=600&q=80">
+                        </div>
+
+                        <div class="form-group">
+                            <label>رابط صورة خلفية ليل الصحراء (Real Desert Night Backdrop URL):</label>
+                            <input type="url" id="adminDesertBackdropUrl" placeholder="https://..." value="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1600&q=80">
+                        </div>
+
+                        <div class="form-group">
+                            <label>رابط صورة الشاعر محمد البدر الصمادي:</label>
+                            <input type="url" id="adminPoetPhotoUrl" placeholder="https://...">
+                        </div>
+
+                        <button type="submit" class="btn-primary-gradient">
+                            <i data-lucide="save"></i> حفظ الصور وتطبيقها
+                        </button>
+                    </form>
+                </div>
+
+                <!-- TAB 7: Site Texts & Identity Customizer -->
+                <div class="admin-tab-content" id="tabContent-site-info">
+                    <h4>تعديل نصوص الموقع وهوية الشاعر بالكامل</h4>
+                    <form id="siteInfoForm" onsubmit="saveSiteInfo(event)">
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label>شارة الهيرو العلوية (Badge):</label>
+                                <input type="text" id="adminHeroBadgeInput" value="للشاعر محمد البدر الصمادي">
+                            </div>
+                            <div class="form-group">
+                                <label>العنوان الرئيسي (Title):</label>
+                                <input type="text" id="adminHeroTitleInput" value="إحياء الشعر العربي">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>النص التعريفي في الهيرو (Subtitle):</label>
+                            <textarea id="adminHeroSubtitleInput" rows="2">هذا الموقع يعرض لكم قصائد الشاعر محمد البدر الصمادي , مبادرة لحفظ اشعاره</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>بيت الشعر في شريط الحكمة والفوتر:</label>
+                            <input type="text" id="adminBannerVerseInput" value="إذا أقبلَ البدرُ المُنيرُ بدَجنةٍ .. تَبَدَّدَ في الآفاقِ ليلُ المواجعِ">
+                        </div>
+
+                        <div class="form-group">
+                            <label>السيرة الذاتية للشاعر محمد البدر الصمادي:</label>
+                            <textarea id="adminPoetBioInput" rows="4"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary-gradient">
+                            <i data-lucide="save"></i> حفظ نصوص وهوية الموقع
+                        </button>
+                    </form>
+                </div>
+
+                <!-- TAB 8: Backup & Export -->
+                <div class="admin-tab-content" id="tabContent-backup">
+                    <h4>حفظ واستعادة كافة بيانات الموقع</h4>
+                    <p>حمّل نسخة احتياطية من كافة القصائد، الطلبات، الألوان، الإحصائيات، والحسابات بملف JSON واحد.</p>
+                    <div class="backup-actions">
+                        <button class="btn-primary-gradient" onclick="exportDataBackup()">
+                            <i data-lucide="download"></i> تصدير نسخة احتياطية شاملة
+                        </button>
+                        <label class="btn-glass file-upload-btn">
+                            <i data-lucide="upload"></i> استيراد نسخة احتياطية
+                            <input type="file" id="importBackupInput" accept=".json" onchange="importDataBackup(event)" style="display:none;">
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 4: POEM EDITOR (Add / Edit Poem) ================= -->
+    <div class="modal-backdrop" id="poemEditorBackdrop">
+        <div class="modal-dialog large-modal">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <i data-lucide="feather" class="gold"></i>
+                    <h3 id="poemEditorModalTitle">إضافة قصيدة جديدة للديوان</h3>
+                </div>
+                <button class="modal-close-btn" onclick="closePoemEditorModal()"><i data-lucide="x"></i></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="poemEditorForm" onsubmit="handleSavePoem(event)">
+                    <input type="hidden" id="editPoemId">
+                    
+                    <div class="form-grid-3">
+                        <div class="form-group">
+                            <label>عنوان القصيدة *</label>
+                            <input type="text" id="editPoemTitle" required placeholder="مثال: مناجاة البدر">
+                        </div>
+                        <div class="form-group">
+                            <label>الغرض الشعري *</label>
+                            <select id="editPoemCategory" required>
+                                <option value="غزل">غزل</option>
+                                <option value="حكمة">حكمة وتأمل</option>
+                                <option value="فخر">فخر وشهامة</option>
+                                <option value="وجدانيات">وجدانيات ومناجاة</option>
+                                <option value="وطنيات">وطنيات</option>
+                                <option value="رثاء">رثاء ووفاء</option>
+                                <option value="مديح">مديح</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>البحر الشعري *</label>
+                            <input type="text" id="editPoemMeter" required placeholder="مثال: بحر الكامل / بحر الطويل">
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>تاريخ النظم (اختياري)</label>
+                            <input type="text" id="editPoemDate" placeholder="مثال: 2026 م">
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label class="custom-checkbox">
+                                <input type="checkbox" id="editPoemFeatured">
+                                <span class="checkmark"></span>
+                                تعيين كقصيدة مختارة في واجهة الموقع
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>مناسبة القصيدة أو قصتها (اختياري)</label>
+                        <textarea id="editPoemStory" rows="2" placeholder="اكتب نبذة عن مناسبة نظم القصيدة..."></textarea>
+                    </div>
+
+                    <div class="verses-builder-section">
+                        <div class="verses-builder-header">
+                            <div>
+                                <h5>أبيات القصيدة (الصدر والعجز مع إمكانية إضافة شروح لكل بيت)</h5>
+                                <small>يمكنك إضافة بيت ببيت أو استخدام اللصق السريع</small>
+                            </div>
+                            <div class="verses-actions">
+                                <button type="button" class="btn-sm-glass" onclick="openBatchVersesPasteModal()">
+                                    <i data-lucide="clipboard-paste"></i> لصق أبيات متعددة دفعة واحدة
+                                </button>
+                                <button type="button" class="btn-sm-primary" onclick="addEmptyVerseRow()">
+                                    <i data-lucide="plus"></i> إضافة بيت جديد
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="verses-inputs-container" id="versesInputsContainer"></div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn-primary-gradient">
+                            <i data-lucide="check-circle"></i> حفظ القصيدة في الديوان
+                        </button>
+                        <button type="button" class="btn-glass" onclick="closePoemEditorModal()">إلغاء</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 5: BATCH PASTE VERSES ================= -->
+    <div class="modal-backdrop" id="batchPasteModalBackdrop">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>لصق سريع لأبيات القصيدة</h3>
+                <button class="modal-close-btn" onclick="closeBatchPasteModal()"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>الصق أبياتك هنا. افصل بين الصدر والعجز بنقاط أو شرطة (مثال: <code>الصدر ... العجز</code>):</p>
+                <textarea id="batchPasteTextarea" rows="8" placeholder="إذا أقبل البدر المنير بدجنة ... تبدد في الآفاق ليل المواجع&#10;وسارت قوافي الشوق تهدي قلوبنا ... إلى واحةٍ طابت بحسن الطبائع"></textarea>
+                <div class="modal-footer">
+                    <button class="btn-primary-gradient" onclick="applyBatchPasteVerses()">
+                        <i data-lucide="check"></i> تحويل الأبيات للقصيدة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 6: SUPERCHARGED VERSE CARD STUDIO ================= -->
+    <div class="modal-backdrop" id="cardStudioBackdrop">
+        <div class="modal-dialog card-studio-modal large-modal">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <i data-lucide="sparkles" class="gold"></i>
+                    <h3>استوديو تصميم بطاقات الأبيات الشعرية المتقدم</h3>
+                </div>
+                <button class="modal-close-btn" onclick="closeCardStudio()"><i data-lucide="x"></i></button>
+            </div>
+
+            <div class="modal-body studio-super-grid">
+                
+                <div class="card-preview-container">
+                    <div class="card-aspect-ratio-wrapper" id="cardRatioWrapper">
+                        <div class="poetry-card-canvas" id="poetryCardCanvas">
+                            <div class="canvas-custom-bg" id="cardCustomBgLayer"></div>
+                            <div class="canvas-ambient-glow" id="cardAmbientGlow"></div>
+                            <div class="canvas-frame-border" id="cardFrameBorder"></div>
+                            
+                            <div class="canvas-header-decor">
+                                <div class="canvas-logo diwani-font" id="cardCanvasLogoText">دِيْوانُ البَدْر</div>
+                                <div class="canvas-mini-moon" id="cardMiniMoon">✦ 🌙 ✦</div>
+                            </div>
+                            
+                            <div class="canvas-verse" id="cardCanvasVerse">
+                                <span class="canvas-sadr" id="cardCanvasSadr">إذا أقبلَ البدرُ المُنيرُ بدَجنةٍ</span>
+                                <span class="canvas-separator" id="cardCanvasSep">❊</span>
+                                <span class="canvas-ajez" id="cardCanvasAjez">تَبَدَّدَ في الآفاقِ ليلُ المواجعِ</span>
+                            </div>
+                            
+                            <div class="canvas-footer-brand">
+                                <span class="canvas-poet" id="cardCanvasPoet">— الشاعر محمد البدر الصمادي</span>
+                                <small class="canvas-watermark-link">diwan-albadr.com</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-quick-export-bar">
+                        <button class="btn-primary-gradient" onclick="downloadCardImagePNG()">
+                            <i data-lucide="download"></i> تحميل البطاقة صورة (HD PNG)
+                        </button>
+                        <button class="btn-glass" onclick="copyCardTextFormatted()">
+                            <i data-lucide="copy"></i> نسخ النص منسقاً
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-controls-panel">
+                    
+                    <div class="studio-tabs">
+                        <button class="studio-tab active" data-stab="text" onclick="switchStudioTab('text')">
+                            <i data-lucide="type"></i> النص والأبيات
+                        </button>
+                        <button class="studio-tab" data-stab="style" onclick="switchStudioTab('style')">
+                            <i data-lucide="palette"></i> الخلفية والألوان
+                        </button>
+                        <button class="studio-tab" data-stab="size" onclick="switchStudioTab('size')">
+                            <i data-lucide="maximize-2"></i> الأبعاد والإطار
+                        </button>
+                    </div>
+
+                    <!-- SUB-TAB 1: TEXT & FONTS -->
+                    <div class="studio-tab-content active" id="sTab-text">
+                        <div class="form-group">
+                            <label>الصدر (الشطر الأول):</label>
+                            <input type="text" id="cardStudioSadr" oninput="updateCardCanvas()">
+                        </div>
+                        <div class="form-group">
+                            <label>العجز (الشطر الثاني):</label>
+                            <input type="text" id="cardStudioAjez" oninput="updateCardCanvas()">
+                        </div>
+                        <div class="form-group">
+                            <label>توقيع الشاعر / الكاتب:</label>
+                            <input type="text" id="cardStudioPoetSign" value="— الشاعر محمد البدر الصمادي" oninput="updateCardCanvas()">
+                        </div>
+                        <div class="form-group">
+                            <label>نوع الخط العربي للبيت:</label>
+                            <select id="cardStudioFontSelect" onchange="updateCardCanvas()"></select>
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label>حجم الخط (Font Size):</label>
+                                <input type="range" id="cardFontSizeRange" min="16" max="38" value="26" oninput="updateCardCanvas()">
+                            </div>
+                            <div class="form-group">
+                                <label>ارتفاع السطر (Line Height):</label>
+                                <input type="range" id="cardLineHeightRange" min="1.2" max="2.5" step="0.1" value="1.8" oninput="updateCardCanvas()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUB-TAB 2: BACKGROUND & COLORS -->
+                    <div class="studio-tab-content" id="sTab-style">
+                        <div class="form-group">
+                            <label>نمط الخلفية الجاهز:</label>
+                            <select id="cardStudioTheme" onchange="updateCardCanvas()">
+                                <option value="real-moon-night">🌙 ليل البدر الحقيقي والنجوم الساطعة</option>
+                                <option value="golden-moon">🌕 سحر البدر الذهبي المتلألئ</option>
+                                <option value="deep-indigo">✨ الأفق الأزرق الكحلي الملكي</option>
+                                <option value="emerald-oasis">🌴 واحة الصحراء الزمردية</option>
+                                <option value="crimson-dusk">🌄 شفق الغسيل الأندلسي الداكن</option>
+                                <option value="dark-marble">🏛️ الرخام الأسود الفاخر</option>
+                                <option value="desert-sand">🏜️ كثبان ليل الصحراء الصامتة</option>
+                                <option value="custom-image">🖼️ رابط صورة مخصصة من عندك</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="customBgUrlGroup" style="display:none;">
+                            <label>رابط صورتك المخصصة (Image URL):</label>
+                            <input type="url" id="cardCustomBgUrl" placeholder="https://..." oninput="updateCardCanvas()">
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label>لون نص البيت:</label>
+                                <div class="picker-row">
+                                    <input type="color" id="cardVerseColor" value="#fff2c6" onchange="updateCardCanvas()">
+                                    <input type="text" id="cardVerseColorHex" value="#fff2c6" oninput="syncStudioColor('cardVerseColor', this.value)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>لون الفاصل والزخارف:</label>
+                                <div class="picker-row">
+                                    <input type="color" id="cardAccentColor" value="#e5b869" onchange="updateCardCanvas()">
+                                    <input type="text" id="cardAccentColorHex" value="#e5b869" oninput="syncStudioColor('cardAccentColor', this.value)">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>عتامة الخلفية الداكنة (Dark Overlay):</label>
+                            <input type="range" id="cardOverlayOpacity" min="0" max="90" value="40" oninput="updateCardCanvas()">
+                        </div>
+                    </div>
+
+                    <!-- SUB-TAB 3: DIMENSIONS & FRAME -->
+                    <div class="studio-tab-content" id="sTab-size">
+                        <div class="form-group">
+                            <label>أبعاد ونسبة البطاقة (Aspect Ratio):</label>
+                            <div class="ratio-buttons-grid">
+                                <button type="button" class="ratio-btn active" data-ratio="square" onclick="setCardRatio('square')">
+                                    <span>مربع (1:1)</span>
+                                    <small>منشورات انستغرام وتويتر</small>
+                                </button>
+                                <button type="button" class="ratio-btn" data-ratio="story" onclick="setCardRatio('story')">
+                                    <span>طولي (9:16)</span>
+                                    <small>قصص وستوري وسناب</small>
+                                </button>
+                                <button type="button" class="ratio-btn" data-ratio="portrait" onclick="setCardRatio('portrait')">
+                                    <span>لوحة (4:5)</span>
+                                    <small>بوستر شعر كلاسيكي</small>
+                                </button>
+                                <button type="button" class="ratio-btn" data-ratio="banner" onclick="setCardRatio('banner')">
+                                    <span>عرضي (16:9)</span>
+                                    <small>غلاف وبنر عريض</small>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>نمط الإطار والزخرفة الخارجية:</label>
+                            <select id="cardFrameStyle" onchange="updateCardCanvas()">
+                                <option value="gold-subtle">إطار ذهبي نحيف وأنيق</option>
+                                <option value="double-border">إطار مزدوج ملكي كلاسيكي</option>
+                                <option value="glow-border">إطار متوهج بأنوار البدر</option>
+                                <option value="none">بدون إطار (تصميم مسطح)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
